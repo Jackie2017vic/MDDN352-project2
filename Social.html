@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    <title>Wavve</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="img/core-img/favicon.ico">
+
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- Facebook SDK -->
+ <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '2197361943922586',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v3.1'
+        });
+
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
+       function statusChangeCallback(response){
+         if(response.status === 'connected'){
+           console.log('Logged in and authenticated');
+           setElements(true);
+           testAPI();
+         } else {
+           console.log('Not authenticated');
+           setElements(false);
+         }
+       }
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function testAPI(){
+        FB.api('/me?fields=name,email,birthday,location', function(response){
+          if(response && !response.error){
+            //console.log(response);
+            buildProfile(response);
+          }
+
+          FB.api('/me/feed', function(response){
+            if(response && !response.error){
+              buildFeed(response);
+            }
+          });
+        })
+      }
+
+      function buildProfile(user){
+        let profile = `
+          <h3>${user.name}</h3>
+          <ul class="list-group">
+            <li class="list-group-item">User ID: ${user.id}</li>
+            <li class="list-group-item">Email: ${user.email}</li>
+            <li class="list-group-item">Birthday: ${user.birthday}</li>
+            <li class="list-group-item">Location: ${user.location.name}</li>
+           
+          </ul>
+        `;
+
+        document.getElementById('profile').innerHTML = profile;
+      }
+
+      function buildFeed(feed){
+        let output = '<h3>Latest Posts</h3>';
+        for(let i in feed.data){
+          if(feed.data[i].message){
+            output += `
+              <div class="well">
+                ${feed.data[i].message} <span>${feed.data[i].created_time}</span>
+              </div>
+            `;
+          }
+        }
+
+        document.getElementById('feed').innerHTML = output;
+      }
+
+      function setElements(isLoggedIn){
+        if(isLoggedIn){
+          document.getElementById('logout').style.display = 'block';
+          document.getElementById('profile').style.display = 'block';
+          document.getElementById('feed').style.display = 'block';
+          document.getElementById('fb-btn').style.display = 'none';
+          document.getElementById('heading').style.display = 'none';
+        } else {
+          document.getElementById('logout').style.display = 'none';
+          document.getElementById('profile').style.display = 'none';
+          document.getElementById('feed').style.display = 'none';
+          document.getElementById('fb-btn').style.display = 'block';
+          document.getElementById('heading').style.display = 'block';
+        }
+      }
+
+      function logout(){
+        FB.logout(function(response){
+          setElements(false);
+        });
+      }
+    </script>
+    <!-- session end  -->
+
+    <!-- Preloader Start -->
+    <div id="preloader">
+        <div class="preload-content">
+            <div id="sonar-load"></div>
+        </div>
+    </div>
+    <!-- Preloader End -->
+
+    <!-- Grids -->
+    <div class="grids d-flex justify-content-between">
+        <div class="grid1"></div>
+        <div class="grid2"></div>
+        <div class="grid3"></div>
+        <div class="grid4"></div>
+        <div class="grid5"></div>
+        <div class="grid6"></div>
+        <div class="grid7"></div>
+        <div class="grid8"></div>
+        <div class="grid9"></div>
+    </div>
+
+    <!-- ***** Main Menu Area Start ***** -->
+    <div class="mainMenu d-flex align-items-center justify-content-between">
+        <!-- Close Icon -->
+        <div class="closeIcon">
+            <i class="ti-close" aria-hidden="true"></i>
+        </div>
+        <!-- Logo Area -->
+        <div class="logo-area">
+            <a href="index.html">Wavve</a>
+            <li><a id="logout" href="#" onclick="logout()">Logout</a></li>
+            <fb:login-button
+              id="fb-btn"
+              scope="public_profile"
+              onlogin="checkLoginState();">
+            </fb:login-button>
+        </div>
+        <!-- Nav -->
+        <div class="sonarNav wow fadeInUp" data-wow-delay="1s">
+            <nav>
+                <ul>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Portfolio.html">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Social.html">Social</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="story.html">My Story</a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+        <!-- Copwrite Text -->
+        <div class="copywrite-text">
+            <p>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank"></a>
+
+</p>
+        </div>
+    </div>
+    <!-- ***** Main Menu Area End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="menu-area d-flex justify-content-between">
+                        <!-- Logo Area  -->
+                        <div class="logo-area">
+                            <a href="index.html">Wavve</a>
+                        </div>
+
+                        <div class="menu-content-area d-flex align-items-center">
+                            <!-- Header Social Area -->
+                        <div class="menu-content-area d-flex align-items-center">
+                            <!-- Header Social Area -->
+                            <div class="header-social-area d-flex align-items-center">
+                                <a href="https://www.pinterest.nz/" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                                <a href="https://nz.linkedin.com/" data-toggle="tooltip" data-placement="bottom" title="Linkedin"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                <a href="https://www.instagram.com/" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                <a href="https://www.facebook.com/" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                <a href="https://www.Twitter.com/" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                            </div>
+                            <!-- Menu Icon -->
+                            <span class="navbar-toggler-icon" id="menuIcon"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Hero Area Start ***** -->
+    <section class="hero-area">
+        <div class="hero-slides owl-carousel">
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide bg-img slide-background-overlay" style="background-image: url(img/bg-img/slide1.jpg);">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-end">
+                        <div class="col-12">
+                            <div class="hero-slides-content">
+                                <div class="line"></div>
+                                <h2>Old Group</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide bg-img slide-background-overlay" style="background-image: url(img/bg-img/slide2.jpg);">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-end">
+                        <div class="col-12">
+                            <div class="hero-slides-content">
+                                <div class="line"></div>
+                                <h2>New Group</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide bg-img slide-background-overlay" style="background-image: url(img/bg-img/slide3.jpg);">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-end">
+                        <div class="col-12">
+                            <div class="hero-slides-content">
+                                <div class="line"></div>
+                                <h2>Membership</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide bg-img slide-background-overlay" style="background-image: url(img/bg-img/slide4.jpg);">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-end">
+                        <div class="col-12">
+                            <div class="hero-slides-content">
+                                <div class="line"></div>
+                                <h2>Market</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+    </section>
+    <!-- ***** Hero Area End ***** -->
+
+    <!-- ***** Portfolio Area Start ***** -->
+    <div class="portfolio-area section-padding-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="portfolio-title">
+                        <h2>“There is a really big community to ask <span>you</span> to join.”</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-between">
+                <!-- Single comment Area -->
+                <div class="col-12 col-md-5">
+                    <div class="single-portfolio-item mt-100 portfolio-item-1 wow fadeIn">
+                        <div class="backend-content">
+                            <img class="dots" src="img/core-img/dots.png" alt="">
+                            <h2>Social</h2>
+                        </div>
+      
+                        <div class="portfolio-meta">
+                            <p class="portfolio-date">Feb 02, 2019</p>
+                            <h2><iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpointnshoot808%2Fphotos%2Fbasw.Abq9mPZlMx7DmRXO7QztFx0APwSG0ctyLc8omQCiNbVsWJyFmRW_ROPZrjfmFeMuVyUqCLbp68Op0VZOGFVdBby394axhbHjf79WwvYNkjmqpVnqKiFodrVHspLqk-iMnwvXSwmd7k4H206NTqEmqi2w.1270773503073663.2088897688068588.1986537378122539.2298155397107366.10156926089486420.2131975326859091%2F1270773503073663%2F%3Ftype%3D1%26opaqueCursor%3DAbqtIAdnQAvDvj3SmBHpj0Vj3TVd6_i79rw6PNby5PHp_H8NG7mX8bUZHBw484y_DtEDx1AuqHistTl_pcujrkR3dXEdcYvWlFttezM3BPkK65Hs1dMN5D73BkbssBN1OHploHVeR7lr0MzNMKLj3imvL4TrttaA861US6357dnHsW2BjAo_W0snMgSS0Vl1BzGKX5e119xx8VGJlPrz0gYmX5Up-jpVoZGTF3T8WUYPyfmfrsPqEEbUrAcBK-xz28cMtU1tPITMOL91vZ_fMfq9-HgvZ6hQibG0wgz8lCgzxFNJKzu_w9njL4rquJyjj2uuH_CsMyDhLLLmV-pQK9QxNo3C73mjS40p2uucSE6nR0cCm1n4E6k6d0tSDSfgpqxY4pSofaAXnesHeKQTHdMB7Zi1Mqa8hdU-D_VwTyhJTWBCVqmGRmCSOv9uWrKhYMGE7O5joLaMfVX7gRiaRFna18mXswbfrYRRLcrLo1vkPz5DfxQHoly3Xhkpi_vM0R1wQrTipRb1-474KkD37MfIQlPV3CV1swfCNxDqyGsc7wZmFwLVdZsUtFCLc38y5t5ZjQeIbq-1wxTYIXM7hNuh3dUprXbD6521_OvVdZsmpcCwlNHnTW_J8l4BQWw_dblqGYe1mBkVfliVck2tVWDqoOIhPAX-cMCnUCTNdN0OTi1k6NH_V0gushwwupp-9CUMmIngow1fUKhitXMijcQve3IwMET-0X7jSLTmIRRvFbDkdnXsyNbHejnMxW0lsr7bBiAYTOlDEKqNxypxUuRsS_-moPhqxIT4HPr6eUs_hrNgj9ZPDYkLWqTc4XICC_rantVVl1sGNFO3JULZgO63TR7IggE-58Zy79dcHkSJgyTVnSv0QsmI69hdTCES9xnF8Oh6n0F46NW7TXQYPYGLLu_EdYn2mc0-MIfkwB7qnHbTyxufxpddnjX8Kwh590e3vz_KmUncaNvKqkEEwpr5hdQOVOy6juqaObrU1oRdEZSSzzyu7c0m_fkQW6jdOOJ6lmMMJjDxxA5f0MDPkEG94oTqxIglLdOSAWgnTsimduycOVC7wKvemOyA7zGeuxKg1U1MPAL6hKhxdFKn187askqz1SG1mDohl00oyUSuWTb8hJN-z4XfaG_TLB1go2k%26theater&width=360&show_text=false&appId=314011689268819&height=360" width="360" height="360" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></h2>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single comment Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single-portfolio-item mt-230 portfolio-item-2 wow fadeIn">
+                        <div class="backend-content">
+                            <img class="dots" src="img/core-img/dots.png" alt="">
+                        </div>
+
+                        <div class="portfolio-meta">
+                            <p class="portfolio-date">Mar 02, 2019</p>
+                            <h2><iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FBenWeiSpain%2Fphotos%2Fbasw.Abqj-aurvf_d8_1Jmiih1RjJt17_rT2JN8QezCytQ9TD3MmBVUkaQfz4f82yxOQp-OsrdqipxYU5ddWSnuZV9M6zWKOce19zhyjuoxeGSsW8d2jXR68nMHZljPu6UJS4vNg4saju6TrxACbg9Jeg7Qru.1270773503073663.2088897688068588.1986537378122539.2298155397107366.10156926089486420.2131975326859091%2F2088897688068588%2F%3Ftype%3D1%26opaqueCursor%3DAbpPUf0cvSxPVcjR09gu_2Z27Rz2fPmF4qaArhQpg0ECBJCjN7ncMQK1zZmAjdnpvhR0Rqii0eMNPSrVPFiMJNPgUBmb4EwSWULmgEqa_8MnmPi2hoxKeStYMFutNDFM5P17KxNsX6Se3jZ3q3bRZySvOHFikgyQoKREZhekkFvOzDNSmGxa9FAhcvfefEx3Mg9vFuHgtfGSRBYU1YW3qE-JxO4k9XVFJwz5ZojpdpolJoz3cx2Sp1rdxX_AcT4MlPeI9n0oGVJbk8LgA0AWmolXLPqyXSwPyMwUvgM3uGAh2RDNw_G1zTKAaGN6OaZKGjL0EB45YfATGvpK0rif-cqeZ_FMcdmh6shtitUgNHBNDMFzr_d9_5pbhdiuf2RLo1lVbBMJhccuSKdlp2F22tVclceX7TiWkNNuetB7jyqEdHz-fhIxDyAbCP0_nHWGR5_QTjnkf7TDZO0oj2dtLrBUKFDai-RWwAZTyUgZrfHSR3P9cuMmVI_5jhW4T5QA91L9MFN4PawWgWFcQ5KT1m65Ffws3ceqVJXDk1LmqB1Qdw8g2-hJt14hHKS6aw3dS36qjL7GsH4tYKCt5xp6EvdNLEsOVh1D8wvLzYR8KejNnvkR9T1YaJUPH49Cnc0yuJ5RZV1U44fLmj6iMwmNMdr2OYpyw9OPB3sI78Z5-zrPnEUzxlS8bXUDK9q28AZEoB37xilgHRx-lVX6ZIoGYm0ksDySuezgnesapD2xYTC5Wao7nK6AZdUbJass3dj0xFSFtXAtUZPTgJt1CPZlLHR7zyUMP_V3rbLNss-ekohwzbCTPAXg6zLo9Dib7I3jAkvMOerDGTglLgsAkvzG4sya1mANwIfMUprX1U-MKNsEga13NotrOv6VTtKIHi2ktZ85YtMDbOt5aISpYo1c8i80zFg4Cvjpw6iUKl30ye57fq80atOYLBKOIhcmj_2jOu6_8mzA0BSqFZWC3Ol5lRA0bUL2eaQQcXYykLCRsaeQpGWLn5J42ZHdDUXeWP355kd81mw2VAq2or5lw3MyADhGqj27RNZXAujv_BTiqdCoMBPnvyPawjIZCVfwanmoRg71-jDuiOl3f_p3OdckkvrTp8Py2Pwt6XtKHzWZ3nZN6bY6J0xZ9j9ywGdjLNnwcGQ%26theater&width=360&show_text=false&appId=314011689268819&height=314" width="360" height="360" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Single comment Area -->
+                <div class="col-12 col-md-10">
+                    <div class="single-portfolio-item mt-100 portfolio-item-3 wow fadeIn">
+                        <div class="backend-content">
+                            <img class="dots" src="img/core-img/dots.png" alt="">
+                            <h2>Engage</h2>
+                        </div>
+                        <div class="portfolio-meta">
+                            <p class="portfolio-date">Apr 02, 2019</p>
+                            <h2><iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F196327087143586%2Fphotos%2Fbasw.AbpLckpxL344fYUMPG40euhOD57yQWQi4G5pSbFk9iDYMJvbLzOmU6Kirnr8fUhMCVQiH4ochVHBE_JaOofykoqQpwLMI8TFqd_CBhBMkMXL0WG1PMU_tsMZ5otvofmkFCBtol8qGHTxjvvyHVMJo8ZB.1270773503073663.2088897688068588.1986537378122539.2298155397107366.10156926089486420.2131975326859091%2F1986537378122539%2F%3Ftype%3D1%26opaqueCursor%3DAbp4R-bxe2C6HgKMGrXOZGjtnWTzc-jOmLG-jC-gLyvHRjqz4pcMQ5hl2vOmhVSBpRaojY44wfQAIOzZR8WqrSX82LhWTPbhWcD3_2McGq6ZF-BL9sbg5wOu4XDipKFHzgsevBh2KKeiHU0Q7TD9w-_G5IwGgexAdTso4JE0_Q6raDDN03yS-ZbOloRdciMFJRdjaFEqaZ2CfzZ1aHAftXg1Bp1DEPB2G3ksWrn-gOhmTM3Hywqa9Ls_JC0Aw_fakiySIWN6aIavO2OV6TBEYmzVEtO52qqRKFvffplK0YtFcEn2sQU1DxLpLr0ygRT0UqP0JOt__22a5oJ2V7GOoB5ekfGpic0uirKlAKY7miZ8S00afWxTRhsbNbw6Qf6-Tb9CBYYlxzEQsX0D2sKzTSFhy-MjUOL5V_4lzf2EttqF3E7DxevO7I1m_R-OviKVacEKt8Z4ZksR5HzxY6phkO3vdPHaeIEcnGY4Pl6h62YbaO_2Q32KlH4nPaJs-dh1I54O1aiqEB_gssrXfc_aDv1UAfJBPY6sdNZEhqRJhEGhNV9jVZ1PqMwfKCwjN-XpscE2t_veZmoKNu0yJ4tly7dXr821aBhKc3IPvxTS_aUx5Q5Wc-A3eYGUf2HTI8ocWEWqdwfjL3EZbCaP8hkHExQJpH2_4ZvZaxHsd7D8DARdtHIspHEIWvQXjs2b3p50Ojv9nPGDiL4Dl7TYh6MDgkC2V2Se7lT2nzCxkZPRMzaA6wLy6ZQbF7V8JRs88zdLQHOC8-Qkhqa6upXpwVvwZkYDiQ6uZKWtN2-52_EOPnIpUmjdN9gxWWW7Ti5TLnDgaGvoBN9MUqbUTn1x7VefYd8H8I72pa8_E2CvlC2_HTOTD4Cu_-G55piV94sbF_mQx9QZW1qJ21FWdIoDmjLBorzgSaKUsv6YVfwN6ZOeoDiIonVG4MHasZmALFH57GK7tOwJofimGHAGDKuFR5iK78m07P_TrlJMUKxtkj5Ezh_e1SLqdEfSd3qvcLX-x5myY0wun3CQ3otZnpHx9Ugv2fSmRvAtv0f_kwzp7mMALEBcwIqWSKfjfVT_VXfmWSJJ3hwxPHhv5XtFTrnoqRIVyyrTeLNkX19RMaijyIt2D4SW5Q%26theater&width=360&show_text=false&appId=314011689268819&height=450" width="360" height="360" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-end">
+                <!-- Single comment Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single-portfolio-item portfolio-item-4 wow fadeIn">
+                        <div class="backend-content">
+                            <img class="dots" src="img/core-img/dots.png" alt="">
+                        </div>
+                        <div class="portfolio-meta">
+                            <p class="portfolio-date">May 02, 2019</p>
+                            <h2><iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2FTurtleSurfing%2Fphotos%2Fbasw.AbpSrWrIYq6yGADFQsCL5bM7pv4kUsbKpMw6i3Xffqmwxlgm8PHIWUjqDFeIVn__Chd7OdLlzzXI-LfuND4hrrsF2xHbHkiInNpHESRe7DZCWkH_ipsBOjHmUucH-dnvtejJY5oI2GMW9BmaFs4SarVc.1270773503073663.2088897688068588.1986537378122539.2298155397107366.10156926089486420.2131975326859091%2F2298155397107366%2F%3Ftype%3D1%26opaqueCursor%3DAbo7eBAduYx8vplEwtUzgJ42kJnSabvylZqvjqTRX6F0EtMR_3F2pIt720mam54Z5fr0pjPUdwe-3go_zsQ53HfSWbVUlWu7lAH_r5YNwbY4YaJ26HMxBVVAeO31Li_bUrLd25hk9I4-pp9pq69UNXgyEEnsaz5NvHM5OShOZ0IwragiF6ToSpXOndgDz0w4LVjWFJpZmB2eir7Tuw5z_2NBPnFWZVNlxi_nyDVIxSrIfIrf9TyqPRUFiptyZdw6qho2GECdhgoQWFnsTekRv4-JDCXNBxZYK1J2HfG8kujAHb4jzVrYGHWELT2eHrcAmkASvlkKkY8DyebzwUpwn1xJE28rdwXze1xfnPD5Z9ktF7wzq2I7BLkI6-BM_jJH2OE9TCFCer6W3-mEZ-LbbrAWsoSkewvO0rNFPjxbNiIHh2JewCAPcO-Vhz10shLZEh6ElXpce3fIiQPH9HBORUJ9eP_dNrbndUWth8ZtWi61LT9VuYOpX0N6xiDreS1jCfawCaSnEfT_Y7ys6xPYzyZGUpQDq0pGHJiaR-D0thJdDXYvLxJQiWhlb7Jh8aqG7mI72kXmZb5r6eyZy4fstFDU_8ptcNQaKdl-g-_0K72qSXtImK2A0BvRwJUgj-djklr8DxvyR0TJvkV8KlvTpkfbtgyNhjhChFuonk0ICJ3G_KrLCHOJSU14MktBqw6JUOC3C9rTGvpF0iI-GOM0tVSJYqlHiYCOfNbM0il0NGZNiMsc88PviilPIzKksENtuF2nJTLHb5OR278BFuo2KaEFk0kXYJvj2gl2TBzAN1fODQCt8jXgbK4_VSttDlels0zn5Kbi_ril63RBAElOMmmGBG9gambVEh-Dd76XVSBrTJeq5ZJzAeanJSgvd38W_RxKhzu3TG-Q-MyaDLT4M1j02AFbKBGBIY6n1AMN5GVusRwRl8uc3C5Bnl53UdoiBmmR9GUtE1hPil7fG_tBrzRga5jRwqJBEgzqaXvAcYkpx5SnLgljd8Agh2TNnYgFsfrYHLsm-PN9lzpwdIiozzWBEGbq-MHzeTVwgPuKTYnJDSnYcR0K6OPgfmZyT2HnQCn7Gqi5RCj_JAYpbez6-oo8%26theater&width=360&show_text=false&appId=314011689268819&height=360" width="360" height="360" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"></iframe></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+    <!-- ***** Portfolio Area End ***** -->
+
+    <!-- ***** Call to Action Area Start ***** -->
+    <div class="sonar-call-to-action-area section-padding-0-100">
+        <div class="backEnd-content">
+            <h2>WAVVE</h2>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="call-to-action-content wow fadeInUp" data-wow-delay="0.5s">
+                        <h2></h2>
+                        <a href="https://www.facebook.com/search/top/?q=surfing&epa=SEARCH_BOX" class="btn sonar-btn mt-100">Find it</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Call to Action Area End ***** -->
+
+    <!-- ***** Footer Area Start ***** -->
+    <footer class="footer-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Copywrite Text -->
+                    <div class="copywrite-text">
+                        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved  <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="#" target="_blank">Jackie Xu</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ***** Footer Area End ***** -->
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="js/plugins.js"></script>
+    <!-- Active js -->
+    <script src="js/active.js"></script>
+
+</body>
+
+</html>
